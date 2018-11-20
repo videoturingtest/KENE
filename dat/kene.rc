@@ -1,0 +1,31 @@
+;;;;;;;;; KENE configuration
+
+;;; tag definition file
+TAG_DEF = tag.def
+
+;;; KEMA system data file
+KEMA_DAT = kema.dat
+
+;;; KEMA user dictionary file
+KEMA_DIC = dic.usr
+
+;;; KEPT system data file
+KEPT_DAT = kept.dat
+
+;;; KEPT user rule file
+KEPT_RULE = rule.usr
+
+;;; KPAT frequency data file
+KPAT_FREQ = freq.dat
+
+;;; KPAT user special pattern file -- for 1st step, optional
+KPAT_PTN_S_1 = ptn-s-1.usr
+
+;;; KPAT user special pattern file -- for 2nd step, optional
+KPAT_PTN_S_2 = ptn-s-2.usr
+
+;;; KPAT user special pattern file -- for 3rd step, optional
+KPAT_PTN_S_3 = ptn-s-3.usr
+
+;;; KPAT user general pattern file
+KPAT_PTN_G = ptn-g.usr

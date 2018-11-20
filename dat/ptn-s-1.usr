@@ -1,0 +1,7 @@
+;;; special patterns 1
+
+; CN ...
+; S @0 aa = %0 %S
+; S @0 xx @05 = %0 %E
+; S #P x #P = #P %S
+; S #P u #P = #P %E

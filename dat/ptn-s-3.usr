@@ -1,0 +1,12 @@
+;;; special patterns 3
+
+NC /DT,PRPS@2 /NN#P = #P %E 
+NC /JJ@3 /NN#P = #P %E 
+NC /DT,PRPS@2 /JJ@3 /NN#P = #P %E 
+NC /RB@2 /JJ@3 /NN#P = #P %E 
+NC /DT,PRPS@2 /RB@2 /JJ@3 /NN#P = #P %E 
+
+; S @0 aa = %0 %S
+; S @0 xx @05 = %0 %E
+; S #P x #P = #P %S
+; S #P u #P = #P %E

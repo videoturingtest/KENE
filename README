@@ -1,0 +1,9 @@
+KENE(Konan English kNowledge Extractor) extracts useful English knowledge from sentences.
+
+It uses KEMA(Konan English Morphology Analyzer), KEPT(Konan English POS Tagger) and PCRE libraries.
+
+To test KENE, run "kene.sh" after building the system using "make" tool.
+
+See "dat/kene.rc" for data files used by KENE.
+
+See "src/kene.cpp" for the example of KENE usage.

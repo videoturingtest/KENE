@@ -1,0 +1,183 @@
+
+D:\KPAT-1>KPAT\Debug\vtt-test dat-vtt/vtt.rc 
+ KEMA_PATH = ./dat-vtt/ma
+ KEMA_DAT = kema.dat
+ KEMA_DIC = dic.usr
+ KEMA_SENT = sent.usr
+ KEMA_TOKEN = token.usr
+ KEMA_GUESS = guess.usr
+ KEMA_DFT_TAG = NN
+ KPAT_PATH = ./dat-vtt/pat
+ KPAT_FREQ_DAT = freq.dat
+ KPAT_TOKEN_DAT = token.dat
+ KPAT_STOP = stop.usr
+ KPAT_FEAT = feat.usr
+ KPAT_MATCH_DAT_S = match-s.dat
+ KPAT_MACRO_S = macro-s.usr
+ KPAT_PATTERN_S = pattern-s.usr
+ KPAT_MATCH_DAT_G = match-g.dat
+ KPAT_MACRO_G = macro-g.usr
+ KPAT_PATTERN_G = pattern-g.usr
+> ;;; It matters to me.
+=== lexical analysis: 4
+    0: It  | It it/PRP
+    1: matters  | matters matter/VBZ
+    2: to  | to to/TO
+    3: me.  | me me/PRP | . ./SYM
+=== token setting: 5
+    0: it it It PRP <0:0~0:0 0-2>
+    1: matter matter matters VBZ <1:0~1:0 3-6>
+    2: to to to TO <2:0~2:0 11-2>
+    3: me me me PRP <3:0~3:0 14-2
+    4: . . . SYM 3:1~3:1 16-1>
+=== special match: 0
+=== general match: 0
+> ;;; Sounds like a date to me.
+=== lexical analysis: 6
+    0: Sounds  | Sounds sound/VBZ
+    1: like  | like like/IN
+    2: a  | a a/DT
+    3: date  | date date/NN
+    4: to  | to to/TO
+    5: me.  | me me/PRP | . ./SYM
+=== token setting: 7
+    0: sound sound Sounds VBZ <0:0~0:0 0-5>
+    1: like like like IN <1:0~1:0 7-4>
+    2: a a a DT <2:0~2:0 12-1>
+    3: date date date NN <3:0~3:0 14-4>
+    4: to to to TO <4:0~4:0 19-2>
+    5: me me me PRP <5:0~5:0 22-2
+    6: . . . SYM 5:1~5:1 24-1>
+=== special match: 0
+=== general match: 0
+> ;;; I've had that dream.
+=== lexical analysis: 4
+    0: I've  | I i/PRP | 've have/VB
+    1: had  | had have/VBD
+    2: that  | that that/DT
+    3: dream.  | dream dream/NN | . ./SYM
+=== token setting: 6
+    0: i i I PRP <0:0~0:0 0-1
+    1: have have 've VB 0:1~0:1 1-4>
+    2: have have had VBD <1:0~1:0 5-4>
+    3: that that that DT <2:0~2:0 9-4>
+    4: dream dream dream NN <3:0~3:0 14-5
+    5: . . . SYM 3:1~3:1 19-1>
+=== special match: 0
+=== general match: 0
+> ;;; I can't marry him.
+=== lexical analysis: 4
+    0: I  | I i/CD
+    1: can't  | ca can/MD | n't not/RB
+    2: marry  | marry marry/VB
+    3: him.  | him him/PRP | . ./SYM
+=== token setting: 6
+    0: i i I CD <0:0~0:0 0-1>
+    1: can can ca MD <1:0~1:0 2-3
+    2: not not n't RB 1:1~1:1 4-3>
+    3: marry marry marry VB <2:0~2:0 8-5>
+    4: him him him PRP <3:0~3:0 14-3
+    5: . . . SYM 3:1~3:1 17-1>
+=== special match: 0
+=== general match: 0
+> ;;; I just grabbed a spoon.
+=== lexical analysis: 5
+    0: I  | I i/CD
+    1: just  | just just/JJ
+    2: grabbed  | grabbed grab/VBD
+    3: a  | a a/DT
+    4: spoon.  | spoon spoon/NN | . ./SYM
+=== token setting: 6
+    0: i i I CD <0:0~0:0 0-1>
+    1: just just just JJ <1:0~1:0 2-4>
+    2: grab grab grabbed VBD <2:0~2:0 7-4>
+    3: a a a DT <3:0~3:0 15-1>
+    4: spoon spoon spoon NN <4:0~4:0 17-5
+    5: . . . SYM 4:1~4:1 22-1>
+=== special match: 0
+=== general match: 0
+> ;;; I'll have a cup of coffee.
+=== lexical analysis: 6
+    0: I'll  | I i/PRP | 'll will/MD
+    1: have  | have have/VB
+    2: a  | a a/DT
+    3: cup  | cup cup/NN
+    4: of  | of of/IN
+    5: coffee.  | coffee coffee/NN | . ./SYM
+=== token setting: 8
+    0: i i I PRP <0:0~0:0 0-1
+    1: will will 'll MD 0:1~0:1 1-4>
+    2: have have have VB <1:0~1:0 5-4>
+    3: a a a DT <2:0~2:0 10-1>
+    4: cup cup cup NN <3:0~3:0 12-3>
+    5: of of of IN <4:0~4:0 16-2>
+    6: coffee coffee coffee NN <5:0~5:0 19-6
+    7: . . . SYM 5:1~5:1 25-1>
+=== special match: 0
+=== general match: 0
+> ;;; I'm in Las Vegas.
+=== lexical analysis: 4
+    0: I'm  | I i/PRP | 'm be/VB
+    1: in  | in in/IN
+    2: Las  | Las las/NN
+    3: Vegas.  | Vegas vegas/NN | . ./SYM
+=== token setting: 6
+    0: i i I PRP <0:0~0:0 0-1
+    1: be be 'm VB 0:1~0:1 1-2>
+    2: in in in IN <1:0~1:0 4-2>
+    3: las las Las NN <2:0~2:0 7-3>
+    4: vegas vegas Vegas NN <3:0~3:0 11-5
+    5: . . . SYM 3:1~3:1 16-1>
+=== special match: 0
+=== general match: 0
+> ;;; Of course it was a line.
+=== lexical analysis: 6
+    0: Of  | Of of/IN
+    1: course  | course course/NN
+    2: it  | it it/PRP
+    3: was  | was be/VBD
+    4: a  | a a/DT
+    5: line.  | line line/NN | . ./SYM
+=== token setting: 7
+    0: of of Of IN <0:0~0:0 0-2>
+    1: course course course NN <1:0~1:0 3-6>
+    2: it it it PRP <2:0~2:0 10-2>
+    3: be be was VBD <3:0~3:0 13-2>
+    4: a a a DT <4:0~4:0 17-1>
+    5: line line line NN <5:0~5:0 19-4
+    6: . . . SYM 5:1~5:1 23-1>
+=== special match: 0
+=== general match: 0
+> ;;; I just don't love him.
+=== lexical analysis: 5
+    0: I  | I i/CD
+    1: just  | just just/JJ
+    2: don't  | do do/MD | n't not/RB
+    3: love  | love love/NN
+    4: him.  | him him/PRP | . ./SYM
+=== token setting: 7
+    0: i i I CD <0:0~0:0 0-1>
+    1: just just just JJ <1:0~1:0 2-4>
+    2: do do do MD <2:0~2:0 7-2
+    3: not not n't RB 2:1~2:1 9-3>
+    4: love love love NN <3:0~3:0 13-4>
+    5: him him him PRP <4:0~4:0 18-3
+    6: . . . SYM 4:1~4:1 21-1>
+=== special match: 0
+=== general match: 0
+> ;;; I'm trained for nothing.
+=== lexical analysis: 4
+    0: I'm  | I i/PRP | 'm be/VB
+    1: trained  | trained train/VBD
+    2: for  | for for/CC
+    3: nothing.  | nothing nothing/NN | . ./SYM
+=== token setting: 6
+    0: i i I PRP <0:0~0:0 0-1
+    1: be be 'm VB 0:1~0:1 1-2>
+    2: train train trained VBD <1:0~1:0 4-5>
+    3: for for for CC <2:0~2:0 12-3>
+    4: nothing nothing nothing NN <3:0~3:0 16-7
+    5: . . . SYM 3:1~3:1 23-1>
+=== special match: 0
+=== general match: 0
+> 

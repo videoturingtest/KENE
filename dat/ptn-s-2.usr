@@ -1,0 +1,13 @@
+;;; special patterns 2
+
+VC be/VB,VBD#P not,never = #P %S
+
+VC do/VB,VBD,MD /RB@0 /VB#P  = #P %E
+
+VC have /RB@0 /VBN#P = #P %E
+ 
+VC /MD /RB@0 /VB#P = #P %E
+VC /MD /RB@0 have /VBN#P = #P %E
+
+VC used,dare,need,ought /RB@0 to /VB#P = #P %E
+VC used,dare,need,ought /RB@0 to have /VBN#P = #P %E

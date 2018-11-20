@@ -1,0 +1,7 @@
+;;; general patterns
+
+R /NN,PRP#S be#P /NN,PRP#O = #P`#S`#O
+R /NN,PRP#S hold#P /NN,PRP#O = #P`#S`#O
+R /NN,PRP#S go#P to#P /NN,PRP#O = #P`#S`#O
+
+R this,that#S be#P /NN,PRP#O = #P`#S`#O
