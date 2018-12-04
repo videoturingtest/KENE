@@ -1,0 +1,77 @@
+[
+
+ {
+  "period_num": "6",
+  "start_time": "0:01:08",
+  "end_time": "0:01:11",
+  "speaker": "Monica",
+  "caption": "Okay, everybody relax. This is not even a date.",
+  "results": [
+   {
+    "pred": "is not",
+    "args": [ "This", "even a date" ]
+   }
+  ]
+ },
+
+ {
+  "period_num": "7",
+  "start_time": "0:01:11",
+  "end_time": "0:01:14",
+  "speaker": "Monica",
+  "caption": "It's just two people going out to dinner and not having sex.",
+  "results": [
+   {
+    "pred": "going out to",
+    "args": [ "just two people", "dinner" ]
+   }
+  ]
+ },
+
+ {
+  "period_num": "12",
+  "start_time": "0:01:27",
+  "end_time": "0:01:32",
+  "speaker": "Chandler",
+  "caption": "Then l look down and I realize there is a phone...",
+  "results": [
+   {
+    "pred": "look down",
+    "args": [ "l" ]
+   },
+   {
+    "pred": "there is",
+    "args": [ "a phone..." ]
+   }
+  ]
+ },
+
+ {
+  "period_num": "18",
+  "start_time": "0:01:38",
+  "end_time": "0:01:40",
+  "speaker": "Chandler",
+  "caption": "All of a sudden, the phone starts to ring.",
+  "results": [
+   {
+    "pred": "starts to ring",
+    "args": [ "the phone" ]
+   }
+  ]
+ },
+
+ {
+  "period_num": "19",
+  "start_time": "0:01:43",
+  "end_time": "0:01:44",
+  "speaker": "Chandler",
+  "caption": "And it turns out it's my mother.",
+  "results": [
+   {
+    "pred": "'s",
+    "args": [ "it", "my mother" ]
+   }
+  ]
+ }
+
+]

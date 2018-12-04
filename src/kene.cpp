@@ -1,27 +1,25 @@
+#include <fstream>
 #include "kene-sys.h"
 using namespace NS_KENE;
 
 #define USAGE \
-"Usage: kene path config-file [-lex|-token|-match]\n" \
-"       -lex : show lexical analysis result\n" \
-"       -token : show token list\n" \
-"       -match : show match result\n"
+"Usage: kene data-path config-file input-file output-file\n" \
+"  or   kene data-path config-file (for interactive test)\n"
 
-void kene_main(const char *path, const char *fn_cfg, const SKeneOption *pOpt);
+void kene_main(const char *path, const char *fn_cfg,
+	const char *fn_in, const char *fn_out);
+void kene_test(const char *path, const char *fn_cfg);
 
 int main(int argc, char **argv) {
-	SKeneOption opt = { false, false, false, &cout };
-
-	if (argc < 3) { cerr << USAGE; return 1; }
-	for (int i = 3; i < argc; i++)
-		if (!strcmp(argv[i], "-lex")) opt.show_lex = true;
-		else if (!strcmp(argv[i], "-token")) opt.show_token = true;
-		else if (!strcmp(argv[i], "-match")) opt.show_match = true;
-		else { cerr << USAGE; return 1; }
+	if (argc != 3 && argc != 5)
+		return cerr << USAGE, 1;
 
 	string err;
 	try {
-		kene_main(argv[1], argv[2], &opt);
+		if (argc == 3)
+			kene_test(argv[1], argv[2]);
+		else
+			kene_main(argv[1], argv[2], argv[3], argv[4]);
 	}
 	catch (const char *s) { err = s; goto ERROR; }
 	catch (const string &s) { err = s; goto ERROR; }
@@ -34,11 +32,43 @@ ERROR:
 	return 1;
 }
 //============================================================================
-void kene_main(const char *path, const char *fn_cfg, const SKeneOption *pOpt) {
+void kene_main(const char *path, const char *fn_cfg,
+	const char *fn_in, const char *fn_out) {
 	SCfg cfg; cfg.Set(path, fn_cfg);
 	CDat dat; dat.Load(&cfg);
 	CSys sys; sys.Create();
-	sys.SetOption(pOpt);
+	sys.m_bTest = false;
+
+	string line;
+	SKene *kene_list; int n_kene;
+	SInput in;
+	int lno = 0;
+
+	string p(path); SetPath(p);
+	ifstream is((p+fn_in).c_str());
+	if (!is) Throw(fn_in << ": open error");
+	ofstream os((p + fn_out).c_str());
+	if (!os) Throw(fn_out << ": open error");
+
+	os << "[\n";
+
+	while (getline(is, line)) {
+		lno++;
+		ParseInput((char*)line.c_str(), lno, in);
+		n_kene = sys.Extract(&dat, in.caption.c_str(), kene_list);
+		if (n_kene <= 0) continue;
+		if (lno > 1) os << ",\n";
+		OutEntryJson(os, in, kene_list, n_kene);
+	}
+
+	os << "\n\n]\n";
+}
+//============================================================================
+void kene_test(const char *path, const char *fn_cfg) {
+	SCfg cfg; cfg.Set(path, fn_cfg);
+	CDat dat; dat.Load(&cfg);
+	CSys sys; sys.Create();
+	sys.m_bTest = true;
 
 	string sent_str;
 	SKene *kene_list; int n_kene;
@@ -59,4 +89,3 @@ void kene_main(const char *path, const char *fn_cfg, const SKeneOption *pOpt) {
 		}
 	}
 }
-

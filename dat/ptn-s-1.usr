@@ -1,7 +1,13 @@
 ;;; special patterns 1
 
-; CN ...
-; S @0 aa = %0 %S
-; S @0 xx @05 = %0 %E
-; S #P x #P = #P %S
-; S #P u #P = #P %E
+S1-CW liza minnelli = %0 NN
+S1-CW las vegas = %0 NN
+S1-CW go out with = %0 %S
+S1-CW high school = %0 %E
+S1-CW mr. potato head = %0 NN
+S1-CW pipe organ = %0 NN
+S1-CW go through = %0 %S
+
+S1-CW a lot of = %0 JJ
+S1-CW lots of = %0 JJ
+S1-CW a lot = %0 RB

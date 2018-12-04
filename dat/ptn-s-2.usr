@@ -1,13 +1,30 @@
 ;;; special patterns 2
 
-VC be/VB,VBD#P not,never = #P %S
+S2-VC be/VB,VBD#P not,never = #P %S
 
-VC do/VB,VBD,MD /RB@0 /VB#P  = #P %E
+S2-VC do/VB,VBD /RB@02 /VB#P  = #P %S
+S2-VC /RB@2 do/VB /RB@02 /VB#P  = #P VB
+S2-VC /RB@2 do/VBD /RB@02 /VB#P  = #P VBD
+S2-VC /RB@2 /VB,VBD#P  = #P %E
 
-VC have /RB@0 /VBN#P = #P %E
+S2-VC have/VB,VBD /RB@0 /VBN#P = #P %S
+S2-VC have/VB,VBD /RB@0 get to /VB#P = #P %S
  
-VC /MD /RB@0 /VB#P = #P %E
-VC /MD /RB@0 have /VBN#P = #P %E
+S2-VC /MD /RB@0 /VB#P = #P VB
+S2-VC /MD /RB@0 have /VBN#P = #P VB
 
-VC used,dare,need,ought /RB@0 to /VB#P = #P %E
-VC used,dare,need,ought /RB@0 to have /VBN#P = #P %E
+S2-VC have,used,dare,need/VB,VBD /RB@0 to /VB#P = #P %S
+S2-VC /RB@2 have,used,dare,need/VB /RB@0 to /VB#P = #P VB
+S2-VC /RB@2 have,used,dare,need/VBD /RB@0 to /VB#P = #P VBD
+S2-VC dare/VB,VBD /RB /VB#P = #P %S
+S2-VC /RB@2 dare/VB /RB /VB#P = #P VB
+S2-VC /RB@2 dare/VBD /RB /VB#P = #P VBD
+S2-VC need/MD /RB /VB#P = #P VB
+S2-VC /RB@2 need/MD /RB /VB#P = #P VB
+
+S2-VC ought /RB@0 to /VB#P = #P VB
+S2-VC ought /RB@0 to have /VBN#P = #P VB
+
+S2-VC be/VB,VBD /RB@0 go/VBG to /VB#P = #P %S
+
+S2-WC how#P much,many = #P %S

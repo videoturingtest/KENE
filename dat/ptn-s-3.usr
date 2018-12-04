@@ -1,12 +1,16 @@
 ;;; special patterns 3
 
-NC /DT,PRPS@2 /NN#P = #P %E 
-NC /JJ@3 /NN#P = #P %E 
-NC /DT,PRPS@2 /JJ@3 /NN#P = #P %E 
-NC /RB@2 /JJ@3 /NN#P = #P %E 
-NC /DT,PRPS@2 /RB@2 /JJ@3 /NN#P = #P %E 
+S3-VC be /RB@02 /VBG#P = #P %S
 
-; S @0 aa = %0 %S
-; S @0 xx @05 = %0 %E
-; S #P x #P = #P %S
-; S #P u #P = #P %E
+S3-VC want,hope,like to /VB#P = #P %S
+S3-VC want,hope,like /NN to /VB#P = #P %S
+S3-VC go to /VB#P = #P %S
+
+S3-NC /DT,PRPS,CD@2 /NN#P = #P %E 
+S3-NC /JJ@3 /NN#P = #P %E 
+S3-NC /DT,PRPS,CD@2 /JJ@3 /NN#P = #P %E 
+S3-NC /RB@2 /JJ@3 /NN#P = #P %E 
+S3-NC /DT,PRPS,CD@2 /RB@2 /JJ@3 /NN#P = #P %E 
+S3-NC just,only,even /DT,PRPS,CD@0 /NN#P = #P %E 
+
+S3-JC /RB@2 /JJ#P = #P %E 

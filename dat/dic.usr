@@ -1,19 +1,16 @@
 ;;; KEMA user dictionary
 
-_2d NN:2d
-_2g * = 2 CD:2 | = g NN:g
-_2g #AU NN:2g
-_3d NN:3d
-_3g * = 3 CD:3 | = g NN:g
-_3g #AU NN:3g
-_4d NN:4d
-_4g * = 4 CD:4 | = g NN:g
-_4g #AU NN:4g
-_5g * = 5 CD:5 | = g NN:g
-_5g #AU NN:5g
-_c# NN:C#
+_... SYM:...
+
+_didn't * = did VBD:do | = n't RB:not
+_doesn't * = does VBZ:do | = n't RB:not
+_don't * = do VB:do | = n't RB:not
+
+_gravy NN,JJ:gravy
 
 _that IN,WP,DT:that
+_that's * = that DT:that | = 's VBZ,VBD:be
 _this DT:this
+
 _which WDT,WP:which
 

@@ -1,6 +1,4 @@
-;;; KPM tag definition
-; name format: letter/_/digit 문자로 구성시작은 letter/_
-; max count: 255
+;;; tag definition
 
 CC		; Coordinating conjunction
 CD		; Cardinal number

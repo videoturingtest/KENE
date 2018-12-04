@@ -1,7 +1,49 @@
 ;;; general patterns
 
-R /NN,PRP#S be#P /NN,PRP#O = #P`#S`#O
-R /NN,PRP#S hold#P /NN,PRP#O = #P`#S`#O
-R /NN,PRP#S go#P to#P /NN,PRP#O = #P`#S`#O
+GP /NN#S hurt#P = #P`#S
 
-R this,that#S be#P /NN,PRP#O = #P`#S`#O
+GP /NN#S buy#P /NN#O /NN = #P`#S`#O`%4
+
+GP /NN#S know#P -he,she,i/NN#O = #P`#S`#O ;;;;
+
+GP /NN#S look#P down#P = #P`#S
+GP /NN#S look#P at#P /NN#O = #P`#S`#O
+
+GP /NN#S move#P /NN#O out#P = #P`#S`#O
+
+GP /NN#S go#P to#P /NN#O = #P`#S`#O
+GP /NN#S go#P out#P to#P /NN#O = #P`#S`#O
+
+GP /NN#S matter#P to#P /NN#O = #P`#S`#O
+
+GP /NN#S get#P out#P of#P /NN#O = #P`#S`#O
+GP /NN#S get#P out#P of#P there,here#O = #P`#S`#O
+
+GP /NN#S be#P /NN#O = #P`#S`#O
+GP /NN#S be#P /JJ#P = #P`#S
+GP /NN#S be#P /RB#O = #P`#S`#O
+
+GP this,that/DT#S be#P /NN#O = #P`#S`#O
+GP this,that/DT#S be#P /RB#O = #P`#S`#O
+
+GP there#P be#P /NN#S = #P`#S
+GP there#P be#P nothing,something#S to#S /VB#S = #P`#S
+GP there#P be#P nothing,something#S wrong#S with#S /NN#S = #P`#S
+
+GP /NN#S be#P kind#P of#P /VBG#O = #P`#S`#O
+GP /NN#S be#P back#P in#P /NN#O = #P`#S`#O
+GP /NN#S be#P in#P /NN#O = #P`#S`#O
+
+GP /NN#S be,get#P /RB@02#P marry/VBN#P = #P`#S
+GP /NN#S be,get#P /RB@02#P freak/VBN#P out#P = #P`#S
+GP /NN#S be,get#P /RB@02#P turn/VBN#P on#P by#P /NN#O = #P`#S`#O
+
+GP /NN#S start#P to#P /VB#P = #P`#S
+GP /NN#S start#P /VBG#P = #P`#S
+GP /NN#S start#P to#P /VB#P /NN#O = #P`#S`#O
+GP /NN#S start#P /VBG#P /NN#O = #P`#S`#O
+
+GP /NN#S sound#P like#P /NN#O = #P`#S`#O
+GP /NN#S look#P like#P /NN#O = #P`#S`#O
+
+GP let me get /NN#O /NN = will_get`i`#O`%5

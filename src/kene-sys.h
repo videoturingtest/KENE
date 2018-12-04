@@ -7,17 +7,13 @@
 
 namespace NS_KENE {
 
-struct SKene {		// KENE result
-	bool is_negated;	// true if negated
-	int n_arg;			// argument count
-	char **args;		// argument list
+struct SInput {		// CSV format input
+	string period_num, start_time, end_time, speaker, caption;
 };
 
-struct SKeneOption {// KENE option
-	bool show_lex;		// show lexical analysis result
-	bool show_token;	// show token list
-	bool show_match;	// show match result
-	ostream *p_os;		// output stream
+struct SKene {		// KENE result
+	int n;				// argument count -- > 0
+	char **args;		// argument list -- args[0] : predicate
 };
 //############################################################################
 enum {
@@ -38,15 +34,68 @@ inline CChar *TagName(unsigned id) {
 }
 //############################################################################
 inline void OutKene(ostream &os, const SKene *p) {
-	if (p->is_negated) os << '~';
-	os << '<' << *p->args << ">(";
-	if (p->n_arg > 1) os << '<' << p->args[1] << '>';
-	for (int i = 2; i < p->n_arg; ++i) os << ", <" << p->args[i] << '>';
-	os << ")\n";
+	os << " <" << p->args[0] << "> ( ";
+	if (p->n > 1) os << '<' << p->args[1] << '>';
+	for (int i = 2; i < p->n; ++i)
+		os << ", <" << p->args[i] << '>';
+	os << " )\n";
 }
 inline void OutKene(ostream &os, const SKene *p, int n) {
 	for (const SKene *up = p + n; p < up; ++p)
 		OutKene(os, p);
+}
+//############################################################################
+inline void ParseInput(char *s, int lno, SInput &in) {
+	char *p;
+	if (!(p = strchr(s, ','))) Throw(lno << ": bad input format");
+	*p = '\0'; in.period_num = s; s = p + 1;
+	if (!(p = strchr(s, ','))) Throw(lno << ": bad input format");
+	*p = '\0'; in.start_time = s; s = p + 1;
+	if (!(p = strchr(s, ','))) Throw(lno << ": bad input format");
+	*p = '\0'; in.end_time = s; s = p + 1;
+	if (!(p = strchr(s, ','))) Throw(lno << ": bad input format");
+	*p = '\0'; in.speaker = s;
+	in.caption = p + 1;
+}
+
+inline void OutStrJson(ostream &os, const char *s) {
+	for (os << '"'; *s; ++s) {
+		if (*s == '"') os << '\\';
+		os << *s;
+	}
+	os << '"';
+}
+inline void OutKeneJson(ostream &os, const SKene *p) {
+	os <<    "   {";
+	os <<  "\n    \"pred\": "; OutStrJson(os, p->args[0]);
+	os << ",\n    \"args\": [ ";
+	if (p->n > 1) OutStrJson(os, p->args[1]);
+	for (int i = 2; i < p->n; ++i)
+		os << ", ", OutStrJson(os, p->args[i]);
+	os << " ]\n   }";
+}
+inline void OutKeneJson(ostream &os, const SKene *p, int n) {
+	if (n <= 0) return;
+	OutKeneJson(os, p);
+	for (const SKene *up = p + n; ++p < up; )
+		os << ",\n", OutKeneJson(os, p);
+	os << '\n';
+}
+inline void OutEntryJson(ostream &os, const SInput &in, const SKene *p, int n) {
+	os <<  "\n {";
+	os <<  "\n  \"period_num\": "; OutStrJson(os, in.period_num.c_str());
+	os << ",\n  \"start_time\": "; OutStrJson(os, in.start_time.c_str());
+	os << ",\n  \"end_time\": "; OutStrJson(os, in.end_time.c_str());
+	os << ",\n  \"speaker\": "; OutStrJson(os, in.speaker.c_str());
+	os << ",\n  \"caption\": "; OutStrJson(os, in.caption.c_str());
+	os << ",\n  \"results\": ";
+	if (n > 0) {
+		os << "[\n";
+		OutKeneJson(os, p, n);
+		os << "  ]\n";
+	} else
+		os << "[ ]\n";
+	os << " }";
 }
 //############################################################################
 struct SCfg {	// KENE configuration manager
@@ -115,8 +164,7 @@ public:
 	};
 
 	CSys(): m_Mem(MEM_INIT, MEM_INCR), m_Pool(POOL_INIT, POOL_INCR) {
-		m_Opt.show_lex = false; m_Opt.show_token = false;
-		m_Opt.show_match = false; m_Opt.p_os = &cout;
+		m_bTest = false;
 		m_hKema = 0; m_hKept = 0;
 		m_hToken = 0, m_hPtnS1 = 0, m_hPtnS2 = 0, m_hPtnS3 = 0, m_hPtnG = 0;
 	}
@@ -134,7 +182,7 @@ public:
 		if (KPAT_destroy(msg, m_hPtnG)) Throw(msg); m_hPtnG = 0;
 	}
 
-	void SetOption(const SKeneOption *pOpt) { m_Opt = *pOpt; }
+	bool m_bTest;
 
 	// return # of SKene entries
 	int Extract(const CDat *pd, const char *sent_str, SKene *&kene_list);
@@ -150,13 +198,13 @@ private:
 	KPAT_matcher_option m_optPtnS, m_optPtnG;
 	KEMA_sent *m_pSent;
 	KPAT_token *m_Tokens; int m_NoToken;
-	SKeneOption m_Opt;
 
 	static void ChangeTag(KPAT_token *p, int n) {
 		KPAT_token *up = p + n; do {
 			switch (p->tag) {
 			case TAG_VBZ: p->tag = TAG_VB; break;
 			case TAG_NNS: p->tag = TAG_NN; break;
+			case TAG_PRP: p->tag = TAG_NN; break;
 			case TAG_JJR: p->tag = TAG_JJ; break;
 			case TAG_JJS: p->tag = TAG_JJ; break;
 			case TAG_RBR: p->tag = TAG_RB; break;
@@ -178,8 +226,12 @@ private:
 		} while (++p < up);
 	}
 
-	int MakeResult(const KPAT_result_general *p_result_g, int n_result_g,
-		SKene *&kene_list);
+	void MakeResult(const KPAT_result_general *p_result_g, int n_result_g);
+	static void MkRStr(string &sb, string &sf, const char *s);
+	static void MkRStr(char *s) {
+		for (; *s; ++s)
+			if (*s == '_') *s = ' ';
+	}
 
 	static bool IsNegForm(const char *s) {
 		return StrEq(s, "not") || StrEq(s, "never");

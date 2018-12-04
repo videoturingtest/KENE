@@ -96,7 +96,7 @@ void CDat::LoadUser(SCfg *p) {
 }
 //############################################################################
 static void KpatSlotter(string *ps, const KPAT_token *p, char not_used) {
-	*ps += ' '; *ps += p->str; *ps += "||"; *ps += p->str_surf;
+	*ps += ' '; *ps += p->str_surf;
 }
 
 void CSys::Create() {
@@ -115,7 +115,7 @@ void CSys::Create() {
 	m_optPtnS.spacing_char_slot = '_';
 
 	m_optPtnG.user_slotter = (KPAT_PF_SLOTTER)KpatSlotter;
-	m_optPtnG.apply_overlap_match = 1;
+	m_optPtnG.apply_overlap_match = 0;
 	m_optPtnG.perform_profile = 1;
 
 	if (KEMA_create(msg, &m_hKema, &m_optKema)) Throw(msg);
@@ -129,32 +129,40 @@ void CSys::Create() {
 //============================================================================
 int CSys::Extract(const CDat *pd, const char *sent_str, SKene *&kene_list) {
 	char msg[1024];
-	ostream &os = *m_Opt.p_os;
 	KEMA_sent sent;
+	KEMA_word *pw;
 	KPAT_token *pt;
 	KPAT_result_special	*ps;
 	KPAT_result_general	*pg;
-	int n, nt, ns_all = 0;
-
-	m_Mem.Reset();
-
-	if (KEMA_analyze_sent(msg, m_hKema, pd->HdKema(), &sent,
-		(char*)sent_str, 0)) Throw(msg);
-	if (sent.m_n_word <= 0) return 0;
+	int n, nt, ns_all, done;
+	
+	m_Mem.Reset(); m_Pool.Reset();
+MORE:
+	ns_all = 0;
+	if (KEMA_analyze_doc(msg, m_hKema, pd->HdKema(), &sent,
+		(char*)sent_str, 0, &done)) Throw(msg);
+	if (sent.m_n_word <= 0) goto DONE;
 	m_pSent = &sent;
+	if (m_bTest)
+		cout << "; " << sent.m_str << '\n';
+
+	// skip if question
+	pw = sent.m_p_word + sent.m_n_word - 1;
+	if (*pw->m_p_token[pw->m_n_token - 1].m_str == '?')
+		goto DONE;
 
 	if (KEPT_tag(msg, m_hKept, pd->HdKept(), &sent)) Throw(msg);
-	if (m_Opt.show_lex) {
-		os << "=== lexical analysis result: " << sent.m_n_word << '\n';
-		OutKema(os, &sent);
+	if (m_bTest) {
+		cout << "=== lexical analysis result: " << sent.m_n_word << '\n';
+		OutKema(cout, &sent);
 	}
 
 	if (KPAT_set_token_list(msg, m_hToken, pd->HdPtnG(), &sent, &pt, &nt, 0))
 		Throw(msg);
-	if (nt <= 0) return 0;
-	if (m_Opt.show_token) {
-		os << "=== original token list: " << nt << '\n';
-		OutToken(os, pt, nt);
+	if (nt <= 0) goto DONE;
+	if (m_bTest) {
+		cout << "=== original token list: " << nt << '\n';
+		OutToken(cout, pt, nt);
 	}
 
 	m_Tokens = pt;
@@ -163,53 +171,59 @@ int CSys::Extract(const CDat *pd, const char *sent_str, SKene *&kene_list) {
 	if (pd->HdPtnS1()) {
 		if (KPAT_match_special(msg, m_hPtnS1, pd->HdPtnS1(), pt, nt, &ps, &n))
 			Throw(msg);
-		if (m_Opt.show_match && n > 0) {
-			os << "=== special match 1 result: " << n << '\n';
-			OutSpecial(os, ps, n);
+		if (m_bTest && n > 0) {
+			cout << "=== special match 1 result: " << n << '\n';
+			OutSpecial(cout, ps, n);
 		}
-		if ((nt = KPAT_replace_token_list(n, pt, nt)) <= 0) return 0;
+		if ((nt = KPAT_replace_token_list(n, pt, nt)) <= 0) goto DONE;
 		ns_all += n;
 	}
 	if (pd->HdPtnS2()) {
 		if (KPAT_match_special(msg, m_hPtnS2, pd->HdPtnS2(), pt, nt, &ps, &n))
 			Throw(msg);
-		if (m_Opt.show_match && n > 0) {
-			os << "=== special match 2 result: " << n << '\n';
-			OutSpecial(os, ps, n);
+		if (m_bTest && n > 0) {
+			cout << "=== special match 2 result: " << n << '\n';
+			OutSpecial(cout, ps, n);
 		}
-		if ((nt = KPAT_replace_token_list(n, pt, nt)) <= 0) return 0;
+		if ((nt = KPAT_replace_token_list(n, pt, nt)) <= 0) goto DONE;
 		ns_all += n;
 	}
 	if (pd->HdPtnS3()) {
 		if (KPAT_match_special(msg, m_hPtnS3, pd->HdPtnS3(), pt, nt, &ps, &n))
 			Throw(msg);
-		if (m_Opt.show_match && n > 0) {
-			os << "=== special match 3 result: " << n << '\n';
-			OutSpecial(os, ps, n);
+		if (m_bTest && n > 0) {
+			cout << "=== special match 3 result: " << n << '\n';
+			OutSpecial(cout, ps, n);
 		}
-		if ((nt = KPAT_replace_token_list(n, pt, nt)) <= 0) return 0;
+		if ((nt = KPAT_replace_token_list(n, pt, nt)) <= 0) goto DONE;
 		ns_all += n;
 	}
 
 	m_NoToken = nt;
 	SetSurfForm();
 
-	if (m_Opt.show_token && ns_all > 0) {
-		os << "=== final token list: " << nt << '\n';
-		OutToken(os, pt, nt);
+	if (m_bTest && ns_all > 0) {
+		cout << "=== final token list: " << nt << '\n';
+		OutToken(cout, pt, nt);
 	}
 
 	if (KPAT_match_general(msg, m_hPtnG, pd->HdPtnG(), pt, nt, &pg, &n))
 		Throw(msg);
-	if (n <= 0) return 0;
+	if (n <= 0) goto DONE;
 
 	AdjustResultG(pg, n);
-	if (m_Opt.show_match) {
-		os << "=== general match result: " << n << '\n';
-		OutGeneral(os, pg, n);
+	if (m_bTest) {
+		cout << "=== general match result: " << n << '\n';
+		OutGeneral(cout, pg, n);
 	}
 
-	return MakeResult(pg, n, kene_list);
+	MakeResult(pg, n);
+
+DONE:
+	if (done < (int)strlen(sent_str)) { sent_str += done; goto MORE; }
+
+	kene_list = m_Pool.Pool();
+	return (int)m_Pool.Size();
 }
 //============================================================================
 void CSys::SetSurfForm() {
@@ -243,26 +257,50 @@ void CSys::SetSurfForm() {
 	} while (++pT < upT);
 }
 //============================================================================
-int CSys::MakeResult(const KPAT_result_general *p_result_g, int n_result_g,
-	SKene *&kene_list) {
-	m_Pool.Reset();
+void CSys::MakeResult(const KPAT_result_general *p_result_g, int n_result_g) {
 	const KPAT_result_general *pr = p_result_g, *upr = pr + n_result_g;
 	const KPAT_result_record *prr, *uprr;
 	const KPAT_result_field *pf;
-	SKene *p; int i;
+	SKene *p; int i; char *s;
 	do {
+		if (pr->n_record == 1 && pr->p_record->n_field == 1) {
+			s = pr->p_record->p_field->str;
+			if (*s == 'X' && s[1] == '\0') continue;
+		}
+			
 		prr = pr->p_record, uprr = prr + pr->n_record; do {
 			p = m_Pool.New();
-			p->n_arg = prr->n_field;
-			p->args = (char**)m_Mem.New(p->n_arg * sizeof(char*));
+			p->n = prr->n_field;
+			p->args = (char**)m_Mem.New(p->n * sizeof(char*));
 			pf = prr->p_field; i = 0; do {
 				p->args[i] = m_Mem.Dup(pf[i].str);
-			} while (++i < p->n_arg);
-			p->is_negated = IsNegated(pf);
+				MkRStr(p->args[i]);
+			} while (++i < p->n);
 		} while (++prr < uprr);
 	} while (++pr < upr);
-	kene_list = m_Pool.Pool();
-	return (int)m_Pool.Size();
+}
+//============================================================================
+void CSys::MkRStr(string &sb, string &sf, const char *s) {
+	const char *p; sb.clear(); sf.clear();
+NEXT:
+	if (!*s) return;
+	if (*s == ' ') { ++s; goto NEXT; }
+	if (*s == '|' && s[1] == '|') { p = s; goto SURF; }
+	sb += '_';
+	for (p = s + 1; *p && *p != ' '; ++p)
+		if (*p == '|' && p[1] == '|') break;
+	if (!*p) { sb += s; return; }
+	sb.append(s, (int)(p - s));
+	if (*p == ' ') { s = ++p; goto NEXT; }
+SURF:
+	s = p + 2;
+	if (!*s) return;
+	if (*s == ' ') { ++s; goto NEXT; }
+	sf += '_';
+	for (p = s + 1; *p && *p != ' '; ++p);
+	if (!*p) { sf += s; return; }
+	sf.append(s, (int)(p - s));
+	s = ++p; goto NEXT;
 }
 //============================================================================
 bool CSys::IsNegated(const KPAT_result_field *pf) const {
